@@ -2,8 +2,11 @@
 # control node have openshift-ansible package that should be appropriate with v3.9
 # hosts file for lab.example.com cluster
 # nohup ansible-playbook -i h /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml > /root/log 2>&1
+#make sure NFS server is sharing /exports, [create there etcd  logging-es  logging-es-ops  metrics  registry], make sure permissions of nfs-nodbody accessible
+#if openshift-clients not installed run #atomic-openshift-excluder unexclude
+
 #
-#
+# hosts file for lab.example.com cluster
 [OSEv3:children]
 masters
 etcd
@@ -56,6 +59,28 @@ openshift_metrics_storage_nfs_directory=/exports
 openshift_metrics_storage_volume_name=metrics
 openshift_metrics_storage_volume_size=2Gi
 
+
+openshift_metrics_cassandra_storage_type=pv
+openshift_metrics_cassandra_pvc_size=2Gi
+openshift_metrics_cassandra_pvc_prefix=metrics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 openshift_enable_unsupported_configurations=True
 
 ###
@@ -87,5 +112,4 @@ infra2.lab.example.com openshift_node_labels="{'region': 'infra'}" openshift_ip=
 infra3.lab.example.com openshift_node_labels="{'region': 'master'}" openshift_schedulable=false openshift_ip=172.25.250.23 openshift_public_ip=172.25.250.23 containerized=false
 apps1.lab.example.com openshift_node_labels="{'region': 'primary', 'zone': 'local'}" openshift_ip=172.25.250.31 openshift_public_ip=172.25.250.31 containerized=false
 apps2.lab.example.com openshift_node_labels="{'region': 'primary', 'zone': 'local'}" openshift_ip=172.25.250.32 openshift_public_ip=172.25.250.32 containerized=false
-
 
